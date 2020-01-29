@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 on_chroot << EOF
-cd /home/pi/
+cd ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/
 echo '>>> Set Debian frontend to Noninteractive'
 echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 export DEBIAN_FRONTEND=noninteractive
