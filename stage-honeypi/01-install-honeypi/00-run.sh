@@ -5,7 +5,7 @@ echo '>>> Set Debian frontend to Noninteractive'
 echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 export DEBIAN_FRONTEND=noninteractive
 
-# Update CA certs for a secure connection to GitHub
+echo '>>> Update CA certs for a secure connection to GitHub'
 update-ca-certificates -f
 
 echo '>>> Download latest HoneyPi Installer'
@@ -123,13 +123,14 @@ install -m 644 files/dnsmasq.conf "${ROOTFS_DIR}/etc/dnsmasq.conf"
 install -m 644 files/hostapd.conf.tmpl "${ROOTFS_DIR}/etc/hostapd/hostapd.conf.tmpl"
 install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 
-echo '>>> Install HoneyPi runtime measurement scripts'
-ScriptsTag=$(curl --silent "https://api.github.com/repos/Honey-Pi/rpi-scripts/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")')
+
+echo '>>> Install latest HoneyPi runtime measurement scripts (even if it is a prerelease)'
+ScriptsTag=$(curl --silent "https://api.github.com/repos/Honey-Pi/rpi-scripts/releases" -k | grep -Po '"tag_name": "\K.*?(?=")')
 if [ $ScriptsTag ]; then
     rm -rf ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts # remove folder to download latest
-    echo ">>> Downloading rpi-scripts $ScriptsTag"
-    wget "https://codeload.github.com/Honey-Pi/rpi-scripts/zip/$ScriptsTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip
-    unzip ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi
+    echo ">>> Downloading latest rpi-scripts ($ScriptsTag)"
+    wget -q --show-progress "https://codeload.github.com/Honey-Pi/rpi-scripts/zip/$ScriptsTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip
+    unzip ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi -q
     mv ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts-${ScriptsTag//v} ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts
     sleep 1
     rm ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip
@@ -143,13 +144,13 @@ else
     echo '>>> Something went wrong. Updating rpi-scripts skiped.'
 fi
 
-echo '>>> Install HoneyPi webinterface'
-WebinterfaceTag=$(curl --silent "https://api.github.com/repos/Honey-Pi/rpi-webinterface/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")')
+echo '>>> Install latest HoneyPi webinterface (even if it is a prerelease)'
+WebinterfaceTag=$(curl --silent "https://api.github.com/repos/Honey-Pi/rpi-webinterface/releases" -k | grep -Po '"tag_name": "\K.*?(?=")')
 if [ $WebinterfaceTag ]; then
     rm -rf ${ROOTFS_DIR}/var/www/html # remove folder to download latest
-    echo ">>> Downloading rpi-webinterface $WebinterfaceTag"
-    wget "https://codeload.github.com/Honey-Pi/rpi-webinterface/zip/$WebinterfaceTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip
-    unzip ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi
+    echo ">>> Downloading latest rpi-webinterface ($WebinterfaceTag)"
+    wget -q --show-progress "https://codeload.github.com/Honey-Pi/rpi-webinterface/zip/$WebinterfaceTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip
+    unzip ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi -q
     mkdir -p ${ROOTFS_DIR}/var/www
     mv ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-webinterface-${WebinterfaceTag//v}/dist ${ROOTFS_DIR}/var/www/html
     mv ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-webinterface-${WebinterfaceTag//v}/backend ${ROOTFS_DIR}/var/www/html/backend

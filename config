@@ -9,7 +9,7 @@ TARGET_HOSTNAME='HoneyPi' # TARGET_HOSTNAME is also set by HoneyPi/installer.sh
 FIRST_USER_NAME='pi'
 FIRST_USER_PASS='hivescale'
 TIMEZONE_DEFAULT='Europe/Berlin' # TIMEZONE_DEFAULT is also set by HoneyPi/installer.sh
-KEYBOARD_KEYMAP='de'
+KEYBOARD_KEYMAP='gb'
 KEYBOARD_LAYOUT='English (UK)'
 # wpa_supplicant.conf can be preconfigured and won't be overwritten by HoneyPi/installer.sh
 WPA_ESSID='fremdesWLAN'
