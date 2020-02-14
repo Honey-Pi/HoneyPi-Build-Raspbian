@@ -51,21 +51,16 @@ else
   echo 'net.ifnames=0' >> ${ROOTFS_DIR}/boot/cmdline.txt
 fi
 
-# Disable image resizing
-if grep -q 'init_resize.sh' ${ROOTFS_DIR}/boot/cmdline.txt; then
-    sed -i -e '/init=\/usr\/lib\/raspi-config\/init_resize.sh/d' ${ROOTFS_DIR}/boot/cmdline.txt
+echo '>>> Give shell-scripts rights'
+if grep -q 'www-data ALL=NOPASSWD: ALL' ${ROOTFS_DIR}/etc/sudoers; then
+  echo 'Seems www-data already has the rights, skip this step.'
 else
-    echo '7 - Seems init_resize parameter already removed, skip this step.'
+  on_chroot << EOF
+echo 'www-data ALL=NOPASSWD: ALL' | EDITOR='tee -a' visudo
+EOF
 fi
 
 on_chroot << EOF
-echo '>>> Give shell-scripts rights'
-if grep -q 'www-data ALL=NOPASSWD: ALL' /etc/sudoers; then
-  echo 'Seems www-data already has the rights, skip this step.'
-else
-  echo 'www-data ALL=NOPASSWD: ALL' | EDITOR='tee -a' visudo
-fi
-
 # Install NTP for time synchronisation with wittyPi
 dpkg-reconfigure -f noninteractive ntp
 
@@ -86,7 +81,6 @@ install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/12d1_1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1_1f01"
 
-# Autostart
 echo '>>> Put Measurement Script into Autostart'
 if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
   echo 'Seems measurement main.py already in rc.local, skip this step.'
