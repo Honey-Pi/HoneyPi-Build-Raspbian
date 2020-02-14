@@ -1,1 +1,5 @@
-wvdial usb-modeswitch usb-modeswitch-data lighttpd php-cgi rpi.gpio python-smbus python-setuptools python3-pip libatlas-base-dev ntp git dnsmasq hostapd
+wvdial usb-modeswitch usb-modeswitch-data
+lighttpd php-cgi
+rpi.gpio python-smbus python-setuptools python3-pip libatlas-base-dev
+ntp git
+dnsmasq hostapd
