@@ -3,8 +3,8 @@
 # get pi-gen sources
 git clone https://github.com/RPi-Distro/pi-gen
 cd pi-gen
-#git fetch && git fetch --tags
-#git checkout 2019-09-26-raspbian-buster
+git fetch && git fetch --tags
+git checkout 2020-02-05-raspbian-buster
 cd ..
 
 touch pi-gen/stage5/SKIP_IMAGES
