@@ -85,7 +85,7 @@ echo '>>> Put Measurement Script into Autostart'
 if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
   echo 'Seems measurement main.py already in rc.local, skip this step.'
 else
-  sed -i -e '$i \(sleep 3;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
+  sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
 fi
 echo '>>> Put wvdial into Autostart'
 if grep -q "wvdial &" ${ROOTFS_DIR}/etc/rc.local; then
@@ -123,14 +123,29 @@ install -m 644 files/dnsmasq.conf "${ROOTFS_DIR}/etc/dnsmasq.conf"
 install -m 644 files/hostapd.conf.tmpl "${ROOTFS_DIR}/etc/hostapd/hostapd.conf.tmpl"
 install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 
+STABLE=0
 
-echo '>>> Install latest HoneyPi runtime measurement scripts (even if it is a prerelease)'
-ScriptsTag=$(curl --silent "https://api.github.com/repos/Honey-Pi/rpi-scripts/releases" -k | grep -Po '"tag_name": "\K.*?(?=")')
-if [ $ScriptsTag ]; then
+function get_latest_release() {
+    REPO=$1
+    STABLE=$2
+    if [ $STABLE = 1 ]; then
+        # return latest stable release
+        result="$(curl --silent "https://api.github.com/repos/$REPO/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")')"
+    else
+        # return lastest release, which can be also a pre-releases (alpha, beta, rc)
+        result="$(curl --silent "https://api.github.com/repos/$REPO/tags" -k | grep -Po '"name": "\K.*?(?=")' | head -1)"
+    fi
+    echo "$result"
+}
+
+REPO="Honey-Pi/rpi-scripts"
+ScriptsTag=$(get_latest_release $REPO $STABLE)
+echo ">>> Install latest HoneyPi runtime measurement scripts ($ScriptsTag) from $REPO stable=$STABLE"
+if [ ! -z "$ScriptsTag" ]; then
     rm -rf ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts # remove folder to download latest
     echo ">>> Downloading latest rpi-scripts ($ScriptsTag)"
-    wget -q --show-progress "https://codeload.github.com/Honey-Pi/rpi-scripts/zip/$ScriptsTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip
-    unzip ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi -q
+    wget -q "https://codeload.github.com/$REPO/zip/$ScriptsTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip
+    unzip -q ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi
     mv ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts-${ScriptsTag//v} ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts
     sleep 1
     rm ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiScripts.zip
@@ -144,13 +159,14 @@ else
     echo '>>> Something went wrong. Updating rpi-scripts skiped.'
 fi
 
-echo '>>> Install latest HoneyPi webinterface (even if it is a prerelease)'
-WebinterfaceTag=$(curl --silent "https://api.github.com/repos/Honey-Pi/rpi-webinterface/releases" -k | grep -Po '"tag_name": "\K.*?(?=")')
-if [ $WebinterfaceTag ]; then
+REPO="Honey-Pi/rpi-webinterface"
+WebinterfaceTag=$(get_latest_release $REPO $STABLE)
+echo ">>> Install latest HoneyPi webinterface ($WebinterfaceTag) from $REPO stable=$STABLE"
+if [ ! -z "$WebinterfaceTag" ]; then
     rm -rf ${ROOTFS_DIR}/var/www/html # remove folder to download latest
     echo ">>> Downloading latest rpi-webinterface ($WebinterfaceTag)"
-    wget -q --show-progress "https://codeload.github.com/Honey-Pi/rpi-webinterface/zip/$WebinterfaceTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip
-    unzip ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi -q
+    wget -q "https://codeload.github.com/$REPO/zip/$WebinterfaceTag" -O ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip
+    unzip -q ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip -d ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi
     mkdir -p ${ROOTFS_DIR}/var/www
     mv ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-webinterface-${WebinterfaceTag//v}/dist ${ROOTFS_DIR}/var/www/html
     mv ${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-webinterface-${WebinterfaceTag//v}/backend ${ROOTFS_DIR}/var/www/html/backend
