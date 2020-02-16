@@ -111,7 +111,10 @@ echo '>>> Setup Wifi Configuration'
 if grep -q 'network={' ${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf; then
   echo 'Seems networks are configure, skip this step.'
 else
-  install -m 644 files/wpa_supplicant.conf  "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
+  install -m 600 files/wpa_supplicant.conf  "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf"
+  on_chroot << EOF
+chmod +x /etc/wpa_supplicant/wpa_supplicant.conf
+EOF
 fi
 install -m 644 files/interfaces "${ROOTFS_DIR}/etc/network/interfaces"
 install -m 644 files/dhcpcd.conf "${ROOTFS_DIR}/etc/dhcpcd.conf"
