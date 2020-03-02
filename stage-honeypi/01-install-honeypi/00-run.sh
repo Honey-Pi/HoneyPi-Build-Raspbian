@@ -129,7 +129,7 @@ install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 on_chroot << EOF
 echo '>>> Add timeout for networking service'
 mkdir -p /etc/systemd/system/networking.service.d/
-bash -c 'echo -e "[Service]\nTimeoutStartSec=10sec" > /etc/systemd/system/networking.service.d/timeout.conf'
+bash -c 'echo -e "[Service]\nTimeoutStartSec=60sec" > /etc/systemd/system/networking.service.d/timeout.conf'
 systemctl daemon-reload
 EOF
 
