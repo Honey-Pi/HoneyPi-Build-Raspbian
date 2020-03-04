@@ -79,7 +79,7 @@ EOF
 
 install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
-install -m 644 files/12d1_1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1_1f01"
+install -m 644 files/12d1:1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1:1f01"
 
 echo '>>> Put Measurement Script into Autostart'
 if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
