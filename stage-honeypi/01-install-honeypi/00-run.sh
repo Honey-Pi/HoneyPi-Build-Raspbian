@@ -10,6 +10,9 @@ update-ca-certificates -f
 
 echo '>>> Download latest HoneyPi Installer'
 git clone --depth=1 https://github.com/Honey-Pi/HoneyPi.git /home/${FIRST_USER_NAME}/HoneyPi
+
+chmod -R 775 /home/${FIRST_USER_NAME}/HoneyPi
+chown -R ${FIRST_USER_NAME}:${FIRST_USER_NAME} /home/${FIRST_USER_NAME}/HoneyPi
 EOF
 
 # default gpio for Ds18b20, per default raspbian would use gpio 4
@@ -80,6 +83,7 @@ EOF
 install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/12d1:1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1:1f01"
+install -m 644 files/sysctl.conf "${ROOTFS_DIR}/etc/sysctl.conf"
 
 echo '>>> Put Measurement Script into Autostart'
 if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
