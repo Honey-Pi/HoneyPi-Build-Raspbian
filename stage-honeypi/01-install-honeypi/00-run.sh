@@ -81,9 +81,10 @@ usermod -G www-data -a pi
 EOF
 
 install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
+install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
-install -m 644 files/12d1:1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1:1f01"
 install -m 644 files/sysctl.conf "${ROOTFS_DIR}/etc/sysctl.conf"
+#install -m 644 files/12d1:1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1:1f01"
 
 echo '>>> Put Measurement Script into Autostart'
 if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
@@ -91,12 +92,13 @@ if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
 else
   sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
 fi
-echo '>>> Put wvdial into Autostart'
-if grep -q "wvdial &" ${ROOTFS_DIR}/etc/rc.local; then
-  echo 'Seems wvdial already in rc.local, skip this step.'
-else
-  sed -i -e '$i \wvdial &\n' ${ROOTFS_DIR}/etc/rc.local
-fi
+
+#echo '>>> Put wvdial into Autostart'
+#if grep -q "wvdial &" ${ROOTFS_DIR}/etc/rc.local; then
+#  echo 'Seems wvdial already in rc.local, skip this step.'
+#else
+#  sed -i -e '$i \wvdial &\n' ${ROOTFS_DIR}/etc/rc.local
+#fi
 
 on_chroot << EOF
 chmod +x /etc/rc.local
