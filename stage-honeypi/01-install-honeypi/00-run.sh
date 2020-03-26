@@ -84,6 +84,7 @@ install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
 install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/sysctl.conf "${ROOTFS_DIR}/etc/sysctl.conf"
+install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
 #install -m 644 files/12d1:1f01 "${ROOTFS_DIR}/etc/usb_modeswitch.d/12d1:1f01"
 
 echo '>>> Put Measurement Script into Autostart'
