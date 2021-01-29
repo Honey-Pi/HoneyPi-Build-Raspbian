@@ -12,7 +12,3 @@ FIRST_USER_PASS='hivescale'
 TIMEZONE_DEFAULT='Europe/Berlin' # TIMEZONE_DEFAULT is also set by HoneyPi/installer.sh
 KEYBOARD_KEYMAP='gb'
 KEYBOARD_LAYOUT='English (UK)'
-# wpa_supplicant.conf can be preconfigured and won't be overwritten by HoneyPi/installer.sh
-WPA_ESSID='fremdesWLAN'
-WPA_PASSWORD='password'
-WPA_COUNTRY='DE'
