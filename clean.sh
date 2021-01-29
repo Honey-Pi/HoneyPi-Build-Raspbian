@@ -1,4 +1,3 @@
 #!/bin/bash
 rm -R pi-gen
-rm -R deploy
-docker rm -v pigen_work
+#docker rm -v pigen_work
