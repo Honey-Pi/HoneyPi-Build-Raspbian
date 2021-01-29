@@ -1,5 +1,6 @@
 IMG_NAME='HoneyPi'
 STAGE_LIST='stage0 stage1 stage2 stage-honeypi'
+#CLEAN=1 # if true => re-do the stages defined in STAGE_LIST
 ENABLE_SSH=1
 DEPLOY_ZIP=1
 USE_QEMU=0
