@@ -145,6 +145,7 @@ install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 #EOF
 
 # i don't know why but unzip command was not found anymore on pi-gen
+echo '>>> Install unzip because somehow it is missing since RaspiOS'
 apt-get -y update && apt-get -y install zip unzip
 
 STABLE=0
