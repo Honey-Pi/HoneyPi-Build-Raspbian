@@ -11,8 +11,9 @@ update-ca-certificates -f
 echo '>>> Download latest HoneyPi Installer'
 git clone --depth=1 https://github.com/Honey-Pi/HoneyPi.git /home/${FIRST_USER_NAME}/HoneyPi
 
+echo '>>> Set file rights to /home/pi/HoneyPi'
 chmod -R 775 /home/${FIRST_USER_NAME}/HoneyPi
-chown -R ${FIRST_USER_NAME}:${FIRST_USER_NAME} /home/${FIRST_USER_NAME}/HoneyPi
+chown -R pi:pi /home/${FIRST_USER_NAME}/HoneyPi
 EOF
 
 # default gpio for Ds18b20, per default raspbian would use gpio 4
