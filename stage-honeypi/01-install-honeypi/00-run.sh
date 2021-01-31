@@ -100,8 +100,15 @@ fi
 #fi
 
 on_chroot << EOF
+echo '>>> Enable rc.local'
 chmod +x /etc/rc.local
 systemctl enable rc-local.service
+EOF
+
+on_chroot << EOF
+echo '>>> Use bash as default shell interpreter'
+ln -s bash /bin/sh.bash
+mv /bin/sh.bash /bin/sh
 EOF
 
 on_chroot << EOF
