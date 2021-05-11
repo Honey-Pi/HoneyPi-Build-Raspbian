@@ -1,6 +1,7 @@
 os: linux
 dist: xenial
 language: shell
+version: ~> 1.0
 addons:
   apt:
     update: true
@@ -21,7 +22,7 @@ addons:
 services:
   - docker
 before_install:
-  - sudo apt-get update
+  #- sudo apt-get update
 script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -45,9 +46,9 @@ before_deploy:
 - echo "deploying $RELEASE_FILE_NAME to GitHub releases"
 deploy:
   provider: releases
-  token:
-    secure: YOUR_API_KEY_ENCRYPTED
+  token: $GITHUB_TOKEN
   file: $RELEASE_FILE_NAME
+  edge: true # opt in to dpl v2
   on:
     tags: true
     repo: HoneyPi/HoneyPi-Build-Raspbian
