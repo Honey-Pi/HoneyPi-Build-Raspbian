@@ -1,5 +1,5 @@
 os: linux
-dist: xenial
+dist: bionic
 language: shell
 version: ~> 1.0
 addons:
@@ -26,6 +26,9 @@ before_install:
 install:
 # prepare qemu
 #- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#- wget https://launchpadlibrarian.net/433338128/qemu-user-static_3.1+dfsg-2ubuntu3.3_amd64.deb
+#- wget https://launchpad.net/ubuntu/+source/binfmt-support/2.2.0-2/+build/16376983/+files/binfmt-support_2.2.0-2_amd64.deb
+#- sudo dpkg -i binfmt-support_2.2.0-2_amd64.deb qemu-user-static_3.1+dfsg-2ubuntu3.3_amd64.deb
 - sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx
 script:
 - git clone https://github.com/RPi-Distro/pi-gen pi-gen
