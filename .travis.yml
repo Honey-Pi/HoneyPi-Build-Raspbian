@@ -1,6 +1,7 @@
+os: linux
 dist: xenial
 sudo: required
-language: bash
+language: shell
 addons:
   apt:
     update: true
@@ -18,6 +19,7 @@ addons:
       - quilt
       - debootstrap
       - bsdtar
+      - maven
 services:
   - docker
 before_install:
@@ -46,7 +48,7 @@ before_deploy:
 - echo "deploying $RELEASE_FILE_NAME to GitHub releases"
 deploy:
   provider: releases
-  api_key:
+  token:
     secure: YOUR_API_KEY_ENCRYPTED
   file: $RELEASE_FILE_NAME
   on:
