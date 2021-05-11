@@ -22,17 +22,16 @@ addons:
 services:
 #  - docker
 before_install:
-  #- sudo apt-get update
+- sudo apt-get update
 install:
 # prepare qemu
 #- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+- apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc
+script:
 - git clone https://github.com/RPi-Distro/pi-gen
 - cd pi-gen
 - git fetch && git fetch --tags
 - git checkout 2020-12-02-raspbian-buster
-- sudo apt update || true
-- xargs -a depends sudo apt-get install -y
-script:
 - cd ..
 - cp config pi-gen/config
 - cp -R stage-honeypi pi-gen/stage-honeypi
