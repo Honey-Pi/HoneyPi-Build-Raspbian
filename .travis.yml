@@ -41,7 +41,7 @@ script:
 - cp -R ./../stage-honeypi ./stage-honeypi
 - travis_wait 60 sudo ./build.sh
 before_deploy:
-- export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi-lite.zip"
+- export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"-HoneyPi-lite.zip"
 - export MD5=$(md5sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
 - export SHA1=$(sha1sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
 - touch MD5:"${MD5}"
