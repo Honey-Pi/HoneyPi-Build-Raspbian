@@ -3,6 +3,7 @@ sudo: required
 language: bash
 addons:
   apt:
+    update: true
     packages:
       - qemu
       - qemu-user-static
@@ -20,6 +21,8 @@ addons:
 services:
   - docker
 before_install:
+  - sudo apt-get update
+install: travis_wait mvn install
 script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -27,6 +30,7 @@ script:
 - cd pi-gen
 - git fetch && git fetch --tags
 - git checkout 2020-12-02-raspbian-buster
+- sudo apt update || true
 - xargs -a depends sudo apt-get install -y
 - cd ..
 - cp config pi-gen/config
