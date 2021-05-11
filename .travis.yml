@@ -14,10 +14,11 @@ addons:
       - git
       - curl
       - coreutils
+      - quilt
+      - debootstrap
+      - bsdtar
 services:
   - docker
-before_install:
-#- sudo apt-get -y install --no-install-recommends coreutils wget file git curl
 script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset

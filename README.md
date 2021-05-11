@@ -7,12 +7,16 @@ This build script uses the official Raspbian build script  (https://github.com/R
 Be sure that you have installed Docker on your System. You will also need a git client installed.
 Just start the script by calling:
 
-  sudo ./build-honeypi.sh
+```
+sudo ./build-honeypi.sh
+```
 
 ## Clean up
 For cleaning up the workspace just call
 
-  sudo ./clean.sh
+```
+sudo ./clean.sh
+```
 
 ## Build folder
 The build will be placed in the folder ```pi-gen/deploy/```
@@ -22,6 +26,10 @@ The build will be placed in the folder ```pi-gen/deploy/```
 ```
 brew install coreutils
 ```
+
+## CI/CD
+
+[![Build Status](https://travis-ci.com/Honey-Pi/HoneyPi-Build-Raspbian.svg?branch=master)](https://travis-ci.com/Honey-Pi/HoneyPi-Build-Raspbian)
 
 ## Acknowledgments
 Special thanks to [FabScanPi](https://github.com/mariolukas/FabScanPi-Build-Raspbian) for this build script.
