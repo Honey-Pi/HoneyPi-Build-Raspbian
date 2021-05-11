@@ -8,7 +8,6 @@ addons:
       - binfmt-support
       - parted
       - wget
-      - dosfstools
       - zip
       - coreutils
       - quilt
@@ -28,7 +27,6 @@ services:
   - docker
 script:
 - sudo ./build-honeypi.sh
-- sudo CONTINUE=1 ./build-honeypi.sh
 before_deploy:
 - export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi.zip"
 - export MD5=$(md5sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
