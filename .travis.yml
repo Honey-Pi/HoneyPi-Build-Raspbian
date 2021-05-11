@@ -1,5 +1,6 @@
 dist: trusty
 sudo: required
+language: bash
 addons:
   apt:
     packages:
@@ -10,10 +11,11 @@ addons:
 services:
   - docker
 before_install:
-- sudo apt-get -y install --no-install-recommends coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl
+- sudo apt-get -y install --no-install-recommends coreutils wget file git curl
 - sudo apt-get update || true
-- sudo apt install -y python3-pip python3-pyqt5 python3-pyqt5.qtsvg python3-pyqt5.qtwebsockets qemu qemu-kvm qemu-utils libvirt-clients libvirt-daemon-system virtinst wireshark xtightvncviewer apt-transport-https ca-certificates curl gnupg2 software-properties-common
 script:
+# prepare qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 - sudo ./build-honeypi.sh
 before_deploy:
 - export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi.zip"
