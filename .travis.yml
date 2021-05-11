@@ -36,7 +36,7 @@ script:
 - git checkout 2021-03-04-raspbian-buster
 - cp ./../config ./config
 - cp -R ./../stage-honeypi ./stage-honeypi
-- travis_wait sudo ./build.sh
+- travis_wait 60 sudo ./build.sh
 before_deploy:
 - export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi-lite.zip"
 - export MD5=$(md5sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
