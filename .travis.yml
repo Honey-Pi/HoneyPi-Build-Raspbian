@@ -3,28 +3,18 @@ sudo: required
 addons:
   apt:
     packages:
-      - qemu
-      - qemu-user-static
-      - binfmt-support
-      - parted
       - wget
       - zip
-      - coreutils
-      - quilt
-      - parted
-      - debootstrap
-      - zerofree
-      - dosfstools
-      - bsdtar
-      - libcap2-bin
       - grep
-      - rsync
-      - xz-utils
       - file
       - git
       - curl
 services:
   - docker
+before_install:
+- sudo apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl
+- sudo add-apt-repository ppa:gns3/qemu -y
+- sudo apt-get -y update
 script:
 - sudo ./build-honeypi.sh
 before_deploy:
