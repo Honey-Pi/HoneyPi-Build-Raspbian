@@ -1,6 +1,5 @@
 os: linux
 dist: xenial
-sudo: required
 language: shell
 addons:
   apt:
@@ -19,12 +18,10 @@ addons:
       - quilt
       - debootstrap
       - bsdtar
-      - maven
 services:
   - docker
 before_install:
   - sudo apt-get update
-install: travis_wait mvn install
 script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -55,5 +52,5 @@ deploy:
     tags: true
     repo: HoneyPi/HoneyPi-Build-Raspbian
   file_glob: true
-  skip_cleanup: true
+  cleanup: true
   draft: false
