@@ -29,7 +29,7 @@ script:
 - cp config pi-gen/config
 - cp -R stage-honeypi pi-gen/stage-honeypi
 - cd pi-gen
-- sudo sh ./build-docker.sh
+- sudo ./build.sh
 before_deploy:
 - export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi.zip"
 - export MD5=$(md5sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
