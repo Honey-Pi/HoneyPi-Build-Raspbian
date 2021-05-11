@@ -20,23 +20,24 @@ addons:
       - debootstrap
       - bsdtar
 services:
-  - docker
+#  - docker
 before_install:
   #- sudo apt-get update
-script:
+install:
 # prepare qemu
-- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+#- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 - git clone https://github.com/RPi-Distro/pi-gen
 - cd pi-gen
 - git fetch && git fetch --tags
 - git checkout 2020-12-02-raspbian-buster
 - sudo apt update || true
 - xargs -a depends sudo apt-get install -y
+script:
 - cd ..
 - cp config pi-gen/config
 - cp -R stage-honeypi pi-gen/stage-honeypi
 - cd pi-gen
-- sudo ./build.sh
+- travis_wait 30 sudo ./build.sh
 before_deploy:
 - export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi.zip"
 - export MD5=$(md5sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
