@@ -6,6 +6,9 @@ addons:
   apt:
     update: true
     packages:
+      - language-pack-en
+      - locales
+      - locales-all
       - qemu
       - qemu-user-static
       - binfmt-support
@@ -28,10 +31,10 @@ install:
 #- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 - sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx
 before_script:
-- export LANGUAGE=en_US.UTF-8
-- export LANG=en_US.UTF-8
-- export LC_ALL=en_US.UTF-8
-- sudo locale-gen en_US.UTF-8
+- export LANGUAGE=en_GB.UTF-8
+- export LANG=en_GB.UTF-8
+- export LC_ALL=en_GB.UTF-8
+- sudo locale-gen en_GB.UTF-8
 - sudo dpkg-reconfigure locales
 script:
 - git clone https://github.com/RPi-Distro/pi-gen pi-gen
