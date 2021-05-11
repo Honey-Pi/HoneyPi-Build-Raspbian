@@ -12,11 +12,18 @@ services:
   - docker
 before_install:
 - sudo apt-get -y install --no-install-recommends coreutils wget file git curl
-- sudo apt-get update || true
 script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- sudo ./build-honeypi.sh
+- git clone https://github.com/RPi-Distro/pi-gen
+- cd pi-gen
+- git fetch && git fetch --tags
+- git checkout 2020-12-02-raspbian-buster
+- cd ..
+- cp config pi-gen/config
+- cp -R stage-honeypi pi-gen/stage-honeypi
+- sudo ./build-docker.sh
+- sudo CONTINUE=1 ./build-docker.sh
 before_deploy:
 - export RELEASE_FILE_NAME="deploy/image_"$(date +%Y-%m-%d)"}"-HoneyPi.zip"
 - export MD5=$(md5sum ${RELEASE_FILE_NAME} | cut -d ' ' -f 1)
