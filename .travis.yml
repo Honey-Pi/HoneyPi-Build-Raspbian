@@ -26,7 +26,7 @@ before_install:
 install:
 # prepare qemu
 #- docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc
+- sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc
 script:
 - git clone https://github.com/RPi-Distro/pi-gen
 - cd pi-gen
