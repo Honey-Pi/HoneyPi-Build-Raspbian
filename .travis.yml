@@ -1,5 +1,6 @@
+arch: arm64
 os: linux
-dist: bionic
+dist: focal
 language: shell
 version: ~> 1.0
 addons:
