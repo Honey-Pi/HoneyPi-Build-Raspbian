@@ -34,8 +34,8 @@ before_script:
 - export LANGUAGE=en_GB.UTF-8
 - export LANG=en_GB.UTF-8
 - export LC_ALL=en_GB.UTF-8
-- sudo locale-gen en_GB.UTF-8
 - sudo dpkg-reconfigure locales
+- sudo locale-gen en_GB.UTF-8
 script:
 - git clone https://github.com/RPi-Distro/pi-gen pi-gen
 - cd pi-gen && git fetch && git fetch --tags
@@ -50,12 +50,17 @@ before_deploy:
 - touch MD5:"${MD5}"
 - touch SHA1:"${SHA1}"
 - echo "deploying $RELEASE_FILE_NAME to GitHub releases"
+- export TRAVIS_TAG=$(date +%Y-%m-%d)
+- export RELEASE_NAME=$(date +%Y-%m-%d)"-HoneyPi"
 deploy:
   provider: releases
   token: $GITHUB_TOKEN
+  tag_name: $TRAVIS_TAG
+  name: $RELEASE_NAME
   file: $RELEASE_FILE_NAME
   release_notes: Release created by travis-ci
   edge: true # opt in to dpl v2
   file_glob: true
   cleanup: false
+  overwrite: true
   draft: false
