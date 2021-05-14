@@ -55,9 +55,7 @@ deploy:
   token: $GITHUB_TOKEN
   file: $RELEASE_FILE_NAME
   release_notes: Release created by travis-ci
-  on:
-    tags: true
   edge: true # opt in to dpl v2
   file_glob: true
-  cleanup: true
-  draft: true
+  cleanup: false
+  draft: false
