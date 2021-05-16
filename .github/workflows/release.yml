@@ -1,5 +1,8 @@
 name: HoneyPi CI release
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - master
 
 jobs:
   rpi-image:
