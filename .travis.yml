@@ -23,19 +23,12 @@ addons:
       - quilt
       - debootstrap
       - bsdtar
-services:
-#  - docker
-before_install:
-- sudo apt-get update
 install:
-# prepare qemu
-#- docker run --rm --privileged multiarch/qemu-user-static:register --reset
 - sudo apt-get install -y coreutils quilt parted qemu-user-static debootstrap zerofree zip dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc qemu-utils kpartx
 before_script:
 - export LANGUAGE=en_GB.UTF-8
 - export LANG=en_GB.UTF-8
 - export LC_ALL=en_GB.UTF-8
-- sudo dpkg-reconfigure locales
 - sudo locale-gen en_GB.UTF-8
 script:
 - git clone https://github.com/RPi-Distro/pi-gen pi-gen
@@ -59,7 +52,7 @@ deploy:
   tag_name: $TRAVIS_TAG
   name: $RELEASE_NAME
   file: $RELEASE_FILE_NAME
-  release_notes: Release created by travis-ci
+  release_notes: Raspberry Pi OS Lite image with HoneyPi pre installed. Release created by travis-ci.
   edge: true # opt in to dpl v2
   file_glob: true
   cleanup: false
