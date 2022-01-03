@@ -93,13 +93,6 @@ else
   sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
 fi
 
-#echo '>>> Put wvdial into Autostart'
-#if grep -q "wvdial &" ${ROOTFS_DIR}/etc/rc.local; then
-#  echo 'Seems wvdial already in rc.local, skip this step.'
-#else
-#  sed -i -e '$i \wvdial &\n' ${ROOTFS_DIR}/etc/rc.local
-#fi
-
 on_chroot << EOF
 echo '>>> Enable rc.local'
 chmod +x /etc/rc.local
