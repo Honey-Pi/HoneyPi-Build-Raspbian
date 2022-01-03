@@ -69,7 +69,7 @@ on_chroot << EOF
 dpkg-reconfigure -f noninteractive ntp
 
 echo '>>> Install software for measurement python scripts'
-pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
+pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt --upgrade
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
@@ -208,3 +208,4 @@ DATE=`date +%d-%m-%y`
 echo "HoneyPi (last install on RPi: $DATE)" > ${ROOTFS_DIR}/var/www/html/version.txt
 echo "rpi-scripts $ScriptsTag" >> ${ROOTFS_DIR}/var/www/html/version.txt
 echo "rpi-webinterface $WebinterfaceTag" >> ${ROOTFS_DIR}/var/www/html/version.txt
+echo "postupdatefinished 1" >> /var/www/html/version.txt # because this is the most-recent release
