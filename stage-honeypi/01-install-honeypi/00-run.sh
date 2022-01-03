@@ -208,4 +208,4 @@ DATE=`date +%d-%m-%y`
 echo "HoneyPi (last install on RPi: $DATE)" > ${ROOTFS_DIR}/var/www/html/version.txt
 echo "rpi-scripts $ScriptsTag" >> ${ROOTFS_DIR}/var/www/html/version.txt
 echo "rpi-webinterface $WebinterfaceTag" >> ${ROOTFS_DIR}/var/www/html/version.txt
-echo "postupdatefinished 1" >> /var/www/html/version.txt # because this is the most-recent release
+echo "postupdatefinished 1" >> ${ROOTFS_DIR}/var/www/html/version.txt # because this is the most-recent release
