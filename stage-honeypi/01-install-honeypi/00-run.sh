@@ -86,12 +86,20 @@ install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
 
-echo '>>> Put Measurement Script into Autostart'
-if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
-  echo 'Seems measurement main.py already in rc.local, skip this step.'
-else
-  sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
-fi
+#echo '>>> Put Measurement Script into Autostart'
+#if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
+#  echo 'Seems measurement main.py already in rc.local, skip this step.'
+#else
+#  sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
+#fi
+
+echo '>>> Enable HoneyPi Service as Autostart'
+sed -i '/(sleep 2;python3/c\#' /etc/rc.local # disable autostart in rc.local
+install -m 644 files/honeypi.service "${ROOTFS_DIR}/lib/systemd/system/honeypi.service"
+on_chroot << EOF
+systemctl daemon-reload
+systemctl enable honeypi.service
+EOF
 
 on_chroot << EOF
 echo '>>> Enable rc.local'
