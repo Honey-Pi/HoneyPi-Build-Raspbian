@@ -93,8 +93,9 @@ install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
 #  sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
 #fi
 
+# disable autostart in rc.local
+#sed -i '/(sleep 2;python3/c\#' ${ROOTFS_DIR}/etc/rc.local
 echo '>>> Enable HoneyPi Service as Autostart'
-sed -i '/(sleep 2;python3/c\#' /etc/rc.local # disable autostart in rc.local
 install -m 644 files/honeypi.service "${ROOTFS_DIR}/lib/systemd/system/honeypi.service"
 on_chroot << EOF
 systemctl daemon-reload
