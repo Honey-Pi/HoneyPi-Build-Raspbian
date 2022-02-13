@@ -7,9 +7,10 @@ This build script uses the official Pi-Gen build script (https://github.com/RPi-
 
 1. [Download latest release](https://github.com/Honey-Pi/HoneyPi-Build-Raspbian/releases)
 2. Burn image on sd card
-3. Power on your Pi, wait some time after the very first boot
-4. Press the button and connect to the 'HoneyPi'-AccessPoint or connect your Raspberry to your WiFi.
-5. Visit with your browser http://IpOfYourPi/ or http://honeypi.local/ for configuration
+3. Power on your Pi, after your first boot it does automatically reboot, wait some time after the boot. The HoneyPi services are automatically starting. 
+4. Press the hardware button connected to your Raspberry Pi to start the 'HoneyPi'-AccessPoint or connect your Raspberry to your WiFi.
+5. Visit with your browser http://IpOfYourPi/ or http://honeypi.local/ for further configuration.
+6. Have fun!
 
 ## Development
 
