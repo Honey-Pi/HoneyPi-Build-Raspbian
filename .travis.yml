@@ -33,7 +33,7 @@ before_script:
 script:
 - git clone https://github.com/RPi-Distro/pi-gen pi-gen
 - cd pi-gen && git fetch && git fetch --tags
-- git checkout 2021-03-04-raspbian-buster
+- git checkout 2023-12-05-raspios-bookworm
 - cp ./../config ./config
 - cp -R ./../stage-honeypi ./stage-honeypi
 - travis_wait 60 sudo ./build.sh

@@ -1,15 +1,18 @@
 IMG_NAME='HoneyPi'
+PI_GEN_RELEASE='HoneyPi reference'
 STAGE_LIST='stage0 stage1 stage2 stage-honeypi'
 #CLEAN=1 # if true => re-do the stages defined in STAGE_LIST
 ENABLE_SSH=1
-DEPLOY_ZIP=1
+DEPLOY_COMPRESSION='zip'
 USE_QCOW2=0
 USE_QEMU=0
 LOCALE_DEFAULT='en_GB.UTF-8'
 # HoneyPi defaults
 TARGET_HOSTNAME='HoneyPi' # TARGET_HOSTNAME is also set by HoneyPi/installer.sh
 FIRST_USER_NAME='pi'
+DISABLE_FIRST_BOOT_USER_RENAME=1
 FIRST_USER_PASS='hivescale'
 TIMEZONE_DEFAULT='Europe/Berlin' # TIMEZONE_DEFAULT is also set by HoneyPi/installer.sh
+WPA_COUNTRY='DE'
 KEYBOARD_KEYMAP='gb'
 KEYBOARD_LAYOUT='English (UK)'

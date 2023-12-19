@@ -6,7 +6,8 @@ cd pi-gen
 git fetch && git fetch --tags
 #git checkout 2020-02-05-raspbian-buster # Up to image v1.0.8-beta10
 #git checkout 2020-12-02-raspbian-buster # Up to image v1.1
-git checkout 2021-03-04-raspbian-buster # Used for image v1.3
+#git checkout 2021-03-04-raspbian-buster # Used for image v1.3
+git checkout 2023-02-21-raspios-bullseye # Used for images after Dec 2023
 cd ..
 
 # copy config

@@ -7,7 +7,7 @@ This build script uses the official Pi-Gen build script (https://github.com/RPi-
 
 1. [Download latest release](https://github.com/Honey-Pi/HoneyPi-Build-Raspbian/releases)
 2. Burn image on sd card
-3. Power on your Pi, after your first boot it does automatically reboot, wait some time after the boot. The HoneyPi services are automatically starting. 
+3. Power on your Pi, after your first boot it does automatically reboot, wait some time after the boot. The HoneyPi services are automatically starting.
 4. Press the hardware button connected to your Raspberry Pi to start the 'HoneyPi'-AccessPoint or connect your Raspberry to your WiFi.
 5. Visit with your browser http://IpOfYourPi/ or http://honeypi.local/ for further configuration.
 6. Have fun!
@@ -34,6 +34,8 @@ The build will be placed in the folder ```pi-gen/deploy/```
 
 ### Requirements
 
+For MacOS:
+
 ```
 brew install coreutils
 ```
@@ -41,4 +43,3 @@ brew install coreutils
 ## Acknowledgments
 * Special thanks to [FabScanPi](https://github.com/mariolukas/FabScanPi-Build-Raspbian) for this blueprint.
 * Thanks to [HyperBian](https://github.com/hyperion-project/HyperBian) for the GitHub Action.
-

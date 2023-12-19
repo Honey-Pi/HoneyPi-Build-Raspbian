@@ -1,5 +1,5 @@
 name: HoneyPi CI release
-on: 
+on:
   push:
     branches:
       - master
@@ -23,7 +23,7 @@ jobs:
         run: |
           git clone https://github.com/RPi-Distro/pi-gen pi-gen
           cd pi-gen && git fetch && git fetch --tags
-          git checkout 2021-03-04-raspbian-buster
+          git checkout 2023-02-21-raspios-bullseye
           cp ./../config ./config
           cp -R ./../stage-honeypi ./stage-honeypi
           sudo ./build.sh

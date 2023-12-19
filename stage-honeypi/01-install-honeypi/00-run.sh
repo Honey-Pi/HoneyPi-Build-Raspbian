@@ -19,40 +19,75 @@ EOF
 # default gpio for Ds18b20, per default raspbian would use gpio 4
 w1gpio=11
 
-# enable I2C on Raspberry Pi
-# enable 1-Wire on Raspberry Pi
-echo '>>> Enable I2C and 1-Wire'
+echo '>>> Enable I2C'
+if grep -q 'i2c-bcm2708' ${ROOTFS_DIR}/etc/modules; then
+  echo 'Seems i2c-bcm2708 module already exists, skip this step.'
+else
+  echo 'i2c-bcm2708' >> ${ROOTFS_DIR}/etc/modules
+fi
 if grep -q '^i2c-dev' ${ROOTFS_DIR}/etc/modules; then
-  echo '1 - Seems i2c-dev module already exists, skip this step.'
+  echo 'Seems i2c-dev module already exists, skip this step.'
 else
   echo 'i2c-dev' >> ${ROOTFS_DIR}/etc/modules
 fi
+if grep -q 'dtparam=i2c1=on' ${ROOTFS_DIR}/boot/config.txt; then
+  echo 'Seems i2c1 parameter already set, skip this step.'
+else
+  echo 'dtparam=i2c1=on' >> ${ROOTFS_DIR}/boot/config.txt
+fi
+if grep -q '^dtparam=i2c_arm=on' ${ROOTFS_DIR}/boot/config.txt; then
+  echo 'Seems i2c_arm parameter already set, skip this step.'
+else
+  echo 'dtparam=i2c_arm=on' >> ${ROOTFS_DIR}/boot/config.txt
+fi
+
+echo '>>> Enable 1-Wire'
 if grep -q '^w1_gpio' ${ROOTFS_DIR}/etc/modules; then
-  echo '2 - Seems w1_gpio module already exists, skip this step.'
+  echo 'Seems w1_gpio module already exists, skip this step.'
 else
   echo 'w1_gpio' >> ${ROOTFS_DIR}/etc/modules
 fi
 if grep -q '^w1_therm' ${ROOTFS_DIR}/etc/modules; then
-  echo '3 - Seems w1_therm module already exists, skip this step.'
+  echo 'Seems w1_therm module already exists, skip this step.'
 else
   echo 'w1_therm' >> ${ROOTFS_DIR}/etc/modules
 fi
 if grep -q '^dtoverlay=w1-gpio' ${ROOTFS_DIR}/boot/config.txt; then
-  echo '4 - Seems w1-gpio parameter already set, skip this step.'
+  echo 'Seems w1-gpio parameter already set, skip this step.'
 else
   echo 'dtoverlay=w1-gpio,gpiopin='$w1gpio >> ${ROOTFS_DIR}/boot/config.txt
 fi
 if grep -q '^dtparam=i2c_arm=on' ${ROOTFS_DIR}/boot/config.txt; then
-  echo '5 - Seems i2c_arm parameter already set, skip this step.'
+  echo 'Seems i2c_arm parameter already set, skip this step.'
 else
   echo 'dtparam=i2c_arm=on' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
 # Enable Wifi-Stick on Raspberry Pi 1 & 2
 if grep -q '^net.ifnames=0' ${ROOTFS_DIR}/boot/cmdline.txt; then
-  echo '6 - Seems net.ifnames=0 parameter already set, skip this step.'
+  echo 'Seems net.ifnames=0 parameter already set, skip this step.'
 else
   echo 'net.ifnames=0' >> ${ROOTFS_DIR}/boot/cmdline.txt
+fi
+
+# enable miniuart-bt on Raspberry Pi and set core frequency, for stable miniUART and bluetooth (see https://www.raspberrypi.org/documentation/configuration/uart.md)
+echo ">>> Install required miniuart-bt modules for rak811 & Witty Pi"
+if grep -q 'dtoverlay=pi3-miniuart-bt' ${ROOTFS_DIR}/boot/config.txt; then
+  echo 'Seems setting Pi3/4 Bluetooth to use mini-UART is done already, skip this step.'
+else
+  echo 'dtoverlay=pi3-miniuart-bt' >> ${ROOTFS_DIR}/boot/config.txt
+fi
+if grep -q 'core_freq=250' ${ROOTFS_DIR}/boot/config.txt; then
+  echo 'Seems the frequency of GPU processor core is set to 250MHz already, skip this step.'
+else
+  echo 'core_freq=250' >> ${ROOTFS_DIR}/boot/config.txt
+fi
+
+# Enable HDMI for a default "safe" mode to work on all screens
+if grep -q '^hdmi_safe=1' ${ROOTFS_DIR}/boot/config.txt; then
+  echo 'Seems the hdmi is set to safe mode already, skip this step.'
+else
+  echo 'hdmi_safe=1' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
 echo '>>> Give shell-scripts rights'
@@ -65,11 +100,11 @@ EOF
 fi
 
 on_chroot << EOF
-# Install NTP for time synchronisation with wittyPi
+echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp
 
 echo '>>> Install software for measurement python scripts'
-pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt --upgrade
+pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt --upgrade --install-option="--force-pi"
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
@@ -86,15 +121,6 @@ install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
 
-#echo '>>> Put Measurement Script into Autostart'
-#if grep -q "/rpi-scripts/main.py" ${ROOTFS_DIR}/etc/rc.local; then
-#  echo 'Seems measurement main.py already in rc.local, skip this step.'
-#else
-#  sed -i -e '$i \(sleep 2;python3 /home/'${FIRST_USER_NAME}'/HoneyPi/rpi-scripts/main.py)&\n' ${ROOTFS_DIR}/etc/rc.local
-#fi
-
-# disable autostart in rc.local
-#sed -i '/(sleep 2;python3/c\#' ${ROOTFS_DIR}/etc/rc.local
 echo '>>> Enable HoneyPi Service as Autostart'
 install -m 644 files/honeypi.service "${ROOTFS_DIR}/lib/systemd/system/honeypi.service"
 on_chroot << EOF
@@ -133,6 +159,13 @@ EOF
 fi
 install -m 644 files/dhcpcd.conf "${ROOTFS_DIR}/etc/dhcpcd.conf"
 
+echo '>>> Disabling WiFi Power Saving mode in Raspberry 3'
+if grep -q '^wireless-power off' ${ROOTFS_DIR}/etc/network/interfaces; then
+  echo 'Seems wireless-power off already exists, skip this step.'
+else
+  echo 'wireless-power off' >> ${ROOTFS_DIR}/etc/network/interfaces
+fi
+
 # Start in client mode
 # Configuring the DHCP server (dnsmasq)
 install -m 644 files/dnsmasq.conf "${ROOTFS_DIR}/etc/dnsmasq.conf"
@@ -147,8 +180,7 @@ install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 #systemctl daemon-reload
 #EOF
 
-# i don't know why but unzip command was not found anymore on pi-gen
-echo '>>> Install unzip because somehow it is missing since RaspiOS'
+echo '>>> Install unzip because somehow it is missing in pi-gen since Raspberry OS'
 apt-get -y update && apt-get -y install zip unzip
 
 STABLE=0
