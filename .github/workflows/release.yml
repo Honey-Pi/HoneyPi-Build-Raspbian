@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
 
       # install dependencies
       - name: 🔽 Install dependencies
@@ -34,7 +34,7 @@ jobs:
           sudo chown -fR $(stat -c "%U:%G" .) ./deploy
       # delete previous releases
       - name: 🗑️ Delete previous releases
-        uses: dev-drprasad/delete-older-releases@v0.3.2
+        uses: dev-drprasad/delete-older-releases
         with:
           keep_latest: 0
           delete_tags: true
@@ -42,12 +42,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # create release and upload image
       - name: 🚀 Create release and upload image
-        uses: svenstaro/upload-release-action@2.7.0
+        uses: svenstaro/upload-release-action@2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: pi-gen/deploy/HoneyPi.zip
-          asset_name: HoneyPi.zip
+          asset_name: HoneyPi-Image.zip
           tag: HoneyPi
           release_name: HoneyPi
           body: "Raspberry Pi OS Lite image with HoneyPi pre installed. Release created by GitHub action."
           overwrite: true
+      - name: Add artifact to Workflow
+        uses: actions/upload-artifact@v4
+        with:
+            name: HoneyPi-Image
+            path: pi-gen/deploy/HoneyPi.zip
