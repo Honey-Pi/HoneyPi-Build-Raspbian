@@ -104,7 +104,10 @@ echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp
 
 echo '>>> Install software for measurement python scripts'
-pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt --upgrade --install-option="--force-pi"
+pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt --upgrade
+
+echo '>>> Install deprecated DHT library for measurement python scripts'
+pip3 install Adafruit_DHT --install-option="--force-pi" # deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
