@@ -50,15 +50,11 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: pi-gen/deploy/HoneyPi.zip
-          asset_name: $ASSET_NAME
-          tag: $TAG_NAME
-          release_name: $RELEASE_NAME
+          asset_name: $${{ env.date }}-HoneyPi-Image.zip
+          tag: ${{ env.date }}-HoneyPi
+          release_name: ${{ env.date }}-HoneyPi-Image
           body: "Raspberry Pi OS Lite image with HoneyPi pre installed. Release created by GitHub action."
           overwrite: true
-        env:
-          TAG_NAME: ${{ env.date }}-HoneyPi
-          RELEASE_NAME: ${{ env.date }}-HoneyPi-Image
-          ASSET_NAME: ${{ env.date }}-HoneyPi-Image.zip
       - name: Add artifact to Workflow
         uses: actions/upload-artifact@v4
         with:
