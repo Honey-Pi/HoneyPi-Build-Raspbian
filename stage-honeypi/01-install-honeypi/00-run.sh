@@ -99,6 +99,9 @@ echo 'www-data ALL=NOPASSWD: ALL' | EDITOR='tee -a' visudo
 EOF
 fi
 
+echo '>>> Install NumPy for measurement python scripts'
+apt-get -y install --no-install-recommends python3-numpy
+
 on_chroot << EOF
 echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp

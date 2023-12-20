@@ -1,8 +1,21 @@
 libffi-dev
-wvdial usb-modeswitch usb-modeswitch-data
-lighttpd php-cgi
-python3-rpi.gpio python3-smbus python3-setuptools python3-pip libatlas-base-dev libgpiod2 python3-psutil
+wvdial
+usb-modeswitch
+usb-modeswitch-data
+lighttpd
+php-cgi
+python3-rpi.gpio
+python3-smbus
+python3-setuptools
+python3-pip
+libatlas-base-dev
+libatlas3-base
+libgpiod2
+python3-psutil
 ntp git
-dnsmasq hostapd
-libopenjp2-7 libtiff5
-zip unzip
+dnsmasq
+hostapd
+libopenjp2-7
+libtiff5
+zip
+unzip
