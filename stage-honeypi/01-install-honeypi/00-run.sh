@@ -184,7 +184,7 @@ install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 #EOF
 
 echo '>>> Install unzip because somehow it is missing in pi-gen since Raspberry OS'
-apt-get -y update && apt-get -y install zip unzip
+apt-get -y update && apt-get -y install --no-install-recommends zip unzip
 
 STABLE=0
 
