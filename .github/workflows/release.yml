@@ -13,6 +13,10 @@ jobs:
     name: "Build 🍯-🐝-Image"
     runs-on: ubuntu-latest
     steps:
+      - name: Get current date
+        id: date
+        run: |
+          echo "{date}={$(date +'%Y-%m-%d')}" >> $GITHUB_STATE
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -34,7 +38,7 @@ jobs:
           sudo chown -fR $(stat -c "%U:%G" .) ./deploy
       # delete previous releases
       - name: 🗑️ Delete previous releases
-        uses: dev-drprasad/delete-older-releases
+        uses: dev-drprasad/delete-older-releases@0.3.2
         with:
           keep_latest: 0
           delete_tags: true
@@ -46,11 +50,15 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: pi-gen/deploy/HoneyPi.zip
-          asset_name: HoneyPi-Image.zip
-          tag: HoneyPi
-          release_name: HoneyPi
+          asset_name: $ASSET_NAME
+          tag: $TAG_NAME
+          release_name: $RELEASE_NAME
           body: "Raspberry Pi OS Lite image with HoneyPi pre installed. Release created by GitHub action."
           overwrite: true
+        env:
+          TAG_NAME: ${{ env.date }}-HoneyPi
+          RELEASE_NAME: ${{ env.date }}-HoneyPi-Image
+          ASSET_NAME: ${{ env.date }}-HoneyPi-Image.zip
       - name: Add artifact to Workflow
         uses: actions/upload-artifact@v4
         with:
