@@ -111,8 +111,9 @@ pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt --upgrade
 
 echo '>>> Install deprecated DHT library for measurement python scripts'
 # deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
+python3 -m pip install --upgrade pip setuptools wheel # see: https://stackoverflow.com/a/72934737/6696623
 pip3 install Adafruit_DHT --install-option="--force-pi"
-pip3 install Adafruit_Python_DHT
+pip3 install Adafruit_Python_DHT --install-option="--force-pi"
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
@@ -166,13 +167,6 @@ chmod +x /etc/wpa_supplicant/wpa_supplicant.conf
 EOF
 fi
 install -m 644 files/dhcpcd.conf "${ROOTFS_DIR}/etc/dhcpcd.conf"
-
-echo '>>> Disabling WiFi Power Saving mode in Raspberry 3'
-if grep -q '^wireless-power off' ${ROOTFS_DIR}/etc/network/interfaces; then
-  echo 'Seems wireless-power off already exists, skip this step.'
-else
-  echo 'wireless-power off' >> ${ROOTFS_DIR}/etc/network/interfaces
-fi
 
 # Start in client mode
 # Configuring the DHCP server (dnsmasq)
