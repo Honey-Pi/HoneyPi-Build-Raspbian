@@ -116,7 +116,7 @@ echo '>>> Install deprecated DHT library for measurement python scripts'
 python3 -m pip install --upgrade setuptools wheel # see: https://stackoverflow.com/a/72934737/6696623
 # Fake Raspberry Pi version because --install-option="--force-pi" does not work with pip v22.3
 echo -e "\nHardware   : BCM2709" >> /etc/cpuinfo # see: https://github.com/adafruit/Adafruit_Python_DHT/blob/8f5e2c4d6ebba8836f6d31ec9a0c171948e3237d/Adafruit_DHT/platform_detect.py#L36
-if [ -e /etc/cpuinfo] ; then
+if [ -e /etc/cpuinfo ] ; then
   mount—bind /etc/cpuinfo /proc/cpuinfo
 fi
 pip3 install Adafruit_DHT
