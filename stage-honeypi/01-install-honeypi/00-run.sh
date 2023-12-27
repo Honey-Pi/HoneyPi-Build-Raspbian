@@ -114,8 +114,8 @@ pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
 echo '>>> Install deprecated DHT library for measurement python scripts'
 # deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
 python3 -m pip install --upgrade setuptools wheel # see: https://stackoverflow.com/a/72934737/6696623
-pip3 install Adafruit_DHT --config-settings="force-pi=1"
-pip3 install Adafruit_Python_DHT --config-settings="force-pi=1"
+pip3 install Adafruit_DHT --config-settings="force-pi=True"
+pip3 install Adafruit_Python_DHT --config-settings="force-pi=True"
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
