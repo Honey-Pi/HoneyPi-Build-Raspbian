@@ -12,10 +12,10 @@ libatlas-base-dev
 libatlas3-base
 libgpiod2
 python3-psutil
-ntp git
+ntp
+git
 dnsmasq
 hostapd
 libopenjp2-7
-libtiff5
 zip
 unzip
