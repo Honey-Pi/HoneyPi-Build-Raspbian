@@ -106,7 +106,7 @@ on_chroot << EOF
 echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp
 
-echo '>>> Create a virtual environment using venv to use pip3' # because of issue: https://askubuntu.com/q/1465218
+echo '>>> Create a virtual environment using venv to use pip3' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
 python3 -m venv .venv
 source .venv/bin/activate
 
@@ -116,16 +116,16 @@ python3 -m pip install --upgrade pip
 echo '>>> Install software for measurement python scripts'
 pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
 
-echo '>>> Install deprecated DHT library for measurement python scripts'
-# deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
+echo '>>> Install deprecated Adafruit_DHT library for measurement python scripts'
 python3 -m pip install --upgrade setuptools wheel # see: https://stackoverflow.com/a/72934737/6696623
-# Fake Raspberry Pi version because --install-option="--force-pi" does not work with pip v22.3
+echo '>>> Fake Raspberry Pi version in /proc/cpuinfo because --install-option="--force-pi" does not work with pip v22.3'
 echo -e "\nHardware   : BCM2709" >> /etc/cpuinfo # see: https://github.com/adafruit/Adafruit_Python_DHT/blob/8f5e2c4d6ebba8836f6d31ec9a0c171948e3237d/Adafruit_DHT/platform_detect.py#L36
 if [ -e /etc/cpuinfo ] ; then
   mount --bind /etc/cpuinfo /proc/cpuinfo
 fi
-pip3 install Adafruit_DHT
+pip3 install Adafruit_DHT # deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
 pip3 install Adafruit_Python_DHT
+echo '>>> Finished installing Adafruit_DHT'
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
