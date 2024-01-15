@@ -19,3 +19,4 @@ hostapd
 libopenjp2-7
 zip
 unzip
+python3-venv

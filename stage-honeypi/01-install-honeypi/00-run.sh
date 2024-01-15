@@ -106,8 +106,13 @@ on_chroot << EOF
 echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp
 
+echo '>>> Create a virtual environment using venv to use pip3' # because of issue: https://askubuntu.com/q/1465218
+python3 -m venv .venv
+source .venv/bin/activate
+
 echo '>>> Upgrade pip to at least v22.3'
-python3 -m pip install --upgrade pip # upgrade pip to at least v22.3
+python3 -m pip install --upgrade pip
+
 echo '>>> Install software for measurement python scripts'
 pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
 
