@@ -28,6 +28,8 @@ jobs:
       - name: 🚧 Build
         run: |
           git clone https://github.com/RPi-Distro/pi-gen pi-gen
+          # turn the detached message off
+          git config --global advice.detachedHead false
           cd pi-gen && git fetch && git fetch --tags
           git checkout 2023-12-05-raspios-bookworm
           cp ./../config ./config
