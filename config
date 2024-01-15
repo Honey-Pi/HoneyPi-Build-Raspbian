@@ -1,7 +1,7 @@
 IMG_NAME='HoneyPi'
 PI_GEN_RELEASE='HoneyPi reference'
 STAGE_LIST='stage0 stage1 stage2 stage-honeypi'
-#CLEAN=1 # if true => re-do the stages defined in STAGE_LIST
+CLEAN=0
 ENABLE_SSH=1
 DEPLOY_COMPRESSION='zip'
 USE_QCOW2=0
