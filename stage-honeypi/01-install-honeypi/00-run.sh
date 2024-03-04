@@ -110,7 +110,7 @@ echo '>>> Create a virtual environment using venv to use pip3' # because of --br
 python3 -m venv honeypi-venv
 source /honeypi-venv/bin/activate
 
-echo '>>> modify the default user's path so it begins with the path to the virtual environment itself'
+echo '>>> modify the default users path so it begins with the path to the virtual environment itself'
 VIRTUAL_ENV='/honeypi-venv'
 export VIRTUAL_ENV
 PATH="$VIRTUAL_ENV/bin:$PATH"
