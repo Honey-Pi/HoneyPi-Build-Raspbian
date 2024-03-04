@@ -107,8 +107,14 @@ echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp
 
 echo '>>> Create a virtual environment using venv to use pip3' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv honeypi-venv
+source /honeypi-venv/bin/activate
+
+echo '>>> modify the default user's path so it begins with the path to the virtual environment itself'
+VIRTUAL_ENV='/honeypi-venv'
+export VIRTUAL_ENV
+PATH="$VIRTUAL_ENV/bin:$PATH"
+export PATH
 
 echo '>>> Upgrade pip to at least v22.3'
 python3 -m pip install --upgrade pip
