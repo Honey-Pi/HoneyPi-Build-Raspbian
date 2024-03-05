@@ -117,25 +117,26 @@ PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
 echo $PATH
 
-echo '>>> Add venv to python3'
-apt-get install -y python3-venv
-python3 -m venv /honeypi-venv
+echo '>>> Add venv to system-wide environment path because exporting $PATH env did not work'
+touch /etc/environment
+cp /etc/environment /etc/environment.orig
+echo 'PATH="/honeypi-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"' >> /etc/environment
 
 echo '>>> Upgrade pip to at least v22.3'
-python3 -m pip install --upgrade pip
+/honeypi-venv/bin/python3 -m pip install --upgrade pip
 
 echo '>>> Install software for measurement python scripts'
-pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
+/honeypi-venv/bin/pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
 
 echo '>>> Install deprecated Adafruit_DHT library for measurement python scripts'
-python3 -m pip install --upgrade setuptools wheel # see: https://stackoverflow.com/a/72934737/6696623
+/honeypi-venv/bin/python3 -m pip install --upgrade setuptools wheel # see: https://stackoverflow.com/a/72934737/6696623
 echo '>>> Fake Raspberry Pi version in /proc/cpuinfo because --install-option="--force-pi" does not work with pip v22.3'
 echo -e "\nHardware   : BCM2709" >> /etc/cpuinfo # see: https://github.com/adafruit/Adafruit_Python_DHT/blob/8f5e2c4d6ebba8836f6d31ec9a0c171948e3237d/Adafruit_DHT/platform_detect.py#L36
 if [ -e /etc/cpuinfo ] ; then
   mount --bind /etc/cpuinfo /proc/cpuinfo
 fi
-pip3 install Adafruit_DHT # deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
-pip3 install Adafruit_Python_DHT
+/honeypi-venv/bin/pip3 install Adafruit_DHT # deprecated, but still used for Pi Zero WH because of known issues such as https://github.com/adafruit/Adafruit_CircuitPython_DHT/issues/73 - no longer working on bullseye
+/honeypi-venv/bin/pip3 install Adafruit_Python_DHT
 echo '>>> Finished installing Adafruit_DHT'
 
 echo '>>> Install software for Webinterface'
