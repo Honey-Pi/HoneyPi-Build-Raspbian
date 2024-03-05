@@ -107,7 +107,7 @@ echo '>>> Apply Fix for "statistics directory /var/log/ntpsec/ does not exist or
 mkdir /var/log/ntpsec/
 chown -R ntpsec:ntpsec /var/log/ntpsec/
 
-echo '>>> Set pip to --break-system-packages true because we don't want to use pip-venv or pipx' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
+echo '>>> Set pip to --break-system-packages true because we dont want to use pip-venv or pipx' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
 python3 -m pip config set global.break-system-packages true
 mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old
 
