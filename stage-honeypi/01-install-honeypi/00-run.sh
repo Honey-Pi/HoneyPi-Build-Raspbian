@@ -115,6 +115,11 @@ VIRTUAL_ENV='/honeypi-venv'
 export VIRTUAL_ENV
 PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
+echo $PATH
+
+echo '>>> Add venv to python3'
+apt-get install -y python3-venv`
+python3 -m venv /honeypi-venv
 
 echo '>>> Upgrade pip to at least v22.3'
 python3 -m pip install --upgrade pip
