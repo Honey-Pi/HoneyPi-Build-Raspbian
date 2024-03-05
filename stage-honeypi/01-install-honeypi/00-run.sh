@@ -99,30 +99,15 @@ echo 'www-data ALL=NOPASSWD: ALL' | EDITOR='tee -a' visudo
 EOF
 fi
 
-echo '>>> Install NumPy for measurement python scripts'
-apt-get -y install --no-install-recommends python3-numpy
-
 on_chroot << EOF
 echo '>>> Install NTP for time synchronisation with witty Pi'
 dpkg-reconfigure -f noninteractive ntp
 
-echo '>>> Create a virtual environment using venv to use pip3' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
-#python3 -m venv honeypi-venv
-#source /honeypi-venv/bin/activate
+echo '>>> Apply Fix for "statistics directory /var/log/ntpsec/ does not exist or is unwriteable, error No such file or directory" message'
+mkdir /var/log/ntpsec/
+chown -R ntpsec:ntpsec /var/log/ntpsec/
 
-echo '>>> modify the default users path so it begins with the path to the virtual environment itself'
-#VIRTUAL_ENV='/honeypi-venv'
-#export VIRTUAL_ENV
-#PATH="$VIRTUAL_ENV/bin:$PATH"
-#export PATH
-#echo $PATH
-
-echo '>>> Add venv to system-wide environment path because exporting $PATH env did not work'
-#touch /etc/environment
-#cp /etc/environment /etc/environment.orig
-#echo 'PATH="/honeypi-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"' >> /etc/environment
-
-echo '>>> Set global.break-system-packages true'
+echo '>>> Set pip to --break-system-packages true because we don't want to use pip-venv or pipx' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
 python3 -m pip config set global.break-system-packages true
 mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old
 
@@ -143,6 +128,10 @@ pip3 install Adafruit_DHT # deprecated, but still used for Pi Zero WH because of
 pip3 install Adafruit_Python_DHT
 echo '>>> Finished installing Adafruit_DHT'
 
+echo '>>> Apply a fix for ImportError: Error importing numpy'
+pip3 uninstall --yes numpy
+apt-get -y install --no-install-recommends python3-numpy
+
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
 lighttpd-enable-mod fastcgi-php
@@ -157,6 +146,7 @@ install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
 install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
+install -m 644 files/ntp.conf "${ROOTFS_DIR}/etc/ntpsec/ntp.conf"
 
 echo '>>> Enable HoneyPi Service as Autostart'
 install -m 644 files/honeypi.service "${ROOTFS_DIR}/lib/systemd/system/honeypi.service"
@@ -203,12 +193,6 @@ install -m 644 files/dnsmasq.conf "${ROOTFS_DIR}/etc/dnsmasq.conf"
 install -m 644 files/hostapd.conf.tmpl "${ROOTFS_DIR}/etc/hostapd/hostapd.conf.tmpl"
 install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 
-#on_chroot << EOF
-#echo '>>> Add timeout for networking service'
-#mkdir -p /etc/systemd/system/networking.service.d/
-#bash -c 'echo -e "[Service]\nTimeoutStartSec=60sec" > /etc/systemd/system/networking.service.d/timeout.conf'
-#systemctl daemon-reload
-#EOF
 
 echo '>>> Install unzip because somehow it is missing in pi-gen since Raspberry OS'
 apt-get -y update && apt-get -y install --no-install-recommends zip unzip

@@ -20,3 +20,4 @@ libopenjp2-7
 zip
 unzip
 python3-venv
+python3-numpy
