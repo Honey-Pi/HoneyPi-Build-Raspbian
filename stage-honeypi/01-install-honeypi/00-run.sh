@@ -10,6 +10,7 @@ update-ca-certificates -f
 
 echo '>>> Download latest HoneyPi Installer'
 git clone --depth=1 https://github.com/Honey-Pi/HoneyPi.git /home/${FIRST_USER_NAME}/HoneyPi
+git config --global --add safe.directory /home/${FIRST_USER_NAME}/HoneyPi
 
 echo '>>> Set file rights to /home/pi/HoneyPi'
 chmod -R 775 /home/${FIRST_USER_NAME}/HoneyPi
@@ -90,6 +91,12 @@ else
   echo 'hdmi_safe=1' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
+echo '>>> Create www-data user'
+on_chroot << EOF
+groupadd www-data
+usermod -G www-data -a pi
+EOF
+
 echo '>>> Give shell-scripts rights'
 if grep -q 'www-data ALL=NOPASSWD: ALL' ${ROOTFS_DIR}/etc/sudoers; then
   echo 'Seems www-data already has the rights, skip this step.'
@@ -128,18 +135,13 @@ pip3 install Adafruit_DHT # deprecated, but still used for Pi Zero WH because of
 pip3 install Adafruit_Python_DHT
 echo '>>> Finished installing Adafruit_DHT'
 
-echo '>>> Apply a fix for ImportError: Error importing numpy'
-pip3 uninstall --yes numpy
-apt-get -y install --no-install-recommends python3-numpy
+echo '>>> Install pip3 timezonefinder and numpy'
+pip3 install timezonefinder==6.1.8 --no-deps # required since version v1.3.7 - PA1010D (gps)
+pip3 install numpy # Required for ds18b20 and as a dependency for timezonefinder
 
 echo '>>> Install software for Webinterface'
 lighttpd-enable-mod fastcgi
 lighttpd-enable-mod fastcgi-php
-EOF
-
-on_chroot << EOF
-echo '>>> Create www-data user'
-usermod -G www-data -a pi
 EOF
 
 install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
@@ -147,6 +149,7 @@ install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
 install -m 644 files/ntp.conf "${ROOTFS_DIR}/etc/ntpsec/ntp.conf"
+install -m 644 files/motd "${ROOTFS_DIR}/etc/motd"
 
 echo '>>> Enable HoneyPi Service as Autostart'
 install -m 644 files/honeypi.service "${ROOTFS_DIR}/lib/systemd/system/honeypi.service"
