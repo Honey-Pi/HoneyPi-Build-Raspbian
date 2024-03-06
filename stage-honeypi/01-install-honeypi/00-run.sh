@@ -93,7 +93,6 @@ fi
 
 echo '>>> Create www-data user'
 on_chroot << EOF
-groupadd www-data
 usermod -G www-data -a pi
 EOF
 
@@ -117,6 +116,7 @@ chown -R ntpsec:ntpsec /var/log/ntpsec/
 echo '>>> Set pip to --break-system-packages true because we dont want to use pip-venv or pipx' # because of --break-system-packages issue: https://askubuntu.com/q/1465218
 python3 -m pip config set global.break-system-packages true
 mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old
+export PIP_ROOT_USER_ACTION=ignore
 
 echo '>>> Upgrade pip to at least v22.3'
 python3 -m pip install --upgrade pip
