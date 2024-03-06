@@ -137,6 +137,7 @@ echo '>>> Finished installing Adafruit_DHT'
 
 echo '>>> Install pip3 timezonefinder and numpy'
 pip3 install timezonefinder==6.1.8 --no-deps # required since version v1.3.7 - PA1010D (gps)
+pip3 install h3 # Required as a dependency for timezonefinder
 pip3 install numpy # Required for ds18b20 and as a dependency for timezonefinder
 
 echo '>>> Install software for Webinterface'
