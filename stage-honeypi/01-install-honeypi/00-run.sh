@@ -261,6 +261,13 @@ else
     echo '>>> Something went wrong. Updating rpi-webinterface skiped.'
 fi
 
+# set folder permissions, somehow this line was necessary since Raspi OS bookworm
+on_chroot << EOF
+echo '>>> Set file rights to /home/pi folder'
+sudo chown -R pi:pi /home/pi
+sudo chmod -R 755 /home/pi
+EOF
+
 # Create File with version information
 DATE=`date +%d-%m-%y`
 echo "HoneyPi (last install on RPi: $DATE)" > ${ROOTFS_DIR}/var/www/html/version.txt
