@@ -13,6 +13,11 @@ This build script uses the official Pi-Gen build script (https://github.com/RPi-
 6. More information on controlling the software can be found in the [main repo](https://github.com/Honey-Pi/HoneyPi). The default SSH password in this pre-built HoneyPi image is `hivescale`. 
 7. Have fun!
 
+```
+Username: pi
+Password: hivescale
+```
+
 ## Development
 
 ### Build the Image
