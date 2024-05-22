@@ -266,6 +266,7 @@ on_chroot << EOF
 echo '>>> Set file rights to /home/pi folder'
 sudo chown -R pi:pi /home/pi
 sudo chmod -R 755 /home/pi
+sudo adduser pi gpio
 EOF
 
 # Create File with version information

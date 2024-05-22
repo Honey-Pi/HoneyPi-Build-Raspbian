@@ -8,7 +8,8 @@ git fetch && git fetch --tags
 #git checkout 2020-12-02-raspbian-buster # Up to image v1.1
 #git checkout 2021-03-04-raspbian-buster # Used for image v1.3
 #git checkout 2023-02-21-raspios-bullseye # Used for images after Dec 2023 v1.4
-git checkout 2023-12-05-raspios-bookworm
+#git checkout 2023-12-05-raspios-bookworm # v1.5.2
+git checkout 2024-03-15-raspios-bookworm
 cd ..
 
 # copy config
@@ -28,6 +29,6 @@ esac
 
 echo "Running build..."
 cd pi-gen
-CONTINUE=1 PRESERVE_CONTAINER=1 ./build-docker.sh
-#./build-docker.sh
-#./build.sh
+PRESERVE_CONTAINER=0 CONTINUE=0 ./build-docker.sh
+#CLEAN=1 ./build.sh
+

@@ -31,7 +31,7 @@ jobs:
           # turn the detached message off
           git config --global advice.detachedHead false
           cd pi-gen && git fetch && git fetch --tags
-          git checkout 2023-12-05-raspios-bookworm
+          git checkout 2024-03-15-raspios-bookworm
           cp ./../config ./config
           cp -R ./../stage-honeypi ./stage-honeypi
           sudo ./build.sh
@@ -51,10 +51,10 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: pi-gen/deploy/HoneyPi.zip
-          asset_name: ${{ env.START_TIME }}-HoneyPi-Image.zip
+          asset_name: ${{ env.START_TIME }}-HoneyPi-armhf-lite.zip
           tag: ${{ env.START_TIME }}-HoneyPi
           release_name: ${{ env.START_TIME }}-HoneyPi-Image
-          body: "Raspberry Pi OS Lite image with HoneyPi pre installed. Release created by GitHub action."
+          body: "Raspberry Pi OS armhf Lite image with HoneyPi pre installed. Release created by GitHub action."
           overwrite: true
       - name: Add artifact to Workflow
         uses: actions/upload-artifact@v4
