@@ -4,7 +4,7 @@ usb-modeswitch
 usb-modeswitch-data
 lighttpd
 php-cgi
-python3-rpi.gpio
+python3-rpi-lgpio
 python3-smbus
 python3-setuptools
 python3-pip
