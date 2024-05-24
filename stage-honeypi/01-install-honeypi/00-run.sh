@@ -65,10 +65,10 @@ else
 fi
 
 # Enable Wifi-Stick on Raspberry Pi 1 & 2
-if grep -q '^net.ifnames=0' ${ROOTFS_DIR}/boot/cmdline.txt; then
+if grep -q '^net.ifnames=0' ${ROOTFS_DIR}/boot/firmware/cmdline.txt; then
   echo 'Seems net.ifnames=0 parameter already set, skip this step.'
 else
-  echo 'net.ifnames=0' >> ${ROOTFS_DIR}/boot/cmdline.txt
+  echo 'net.ifnames=0' >> ${ROOTFS_DIR}/boot/firmware/cmdline.txt
 fi
 
 # enable miniuart-bt on Raspberry Pi and set core frequency, for stable miniUART and bluetooth (see https://www.raspberrypi.org/documentation/configuration/uart.md)
