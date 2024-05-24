@@ -8,8 +8,8 @@ git fetch && git fetch --tags
 #git checkout 2020-12-02-raspbian-buster # Up to image v1.1
 #git checkout 2021-03-04-raspbian-buster # Used for image v1.3
 #git checkout 2023-02-21-raspios-bullseye # Used for images after Dec 2023 v1.4
-#git checkout 2023-12-05-raspios-bookworm # v1.5.2
-git checkout 2024-03-15-raspios-bookworm # v1.5.3 (fixed GPIO issue on bookworm OS on Raspi Zero/5 devices)
+#git checkout 2023-12-05-raspios-bookworm # v1.5.2 - caused issues on Raspi Zero and 5
+git 2024-03-12-raspios-bullseye # v1.5.3
 cd ..
 
 # copy config

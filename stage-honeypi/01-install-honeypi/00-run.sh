@@ -31,15 +31,15 @@ if grep -q '^i2c-dev' ${ROOTFS_DIR}/etc/modules; then
 else
   echo 'i2c-dev' >> ${ROOTFS_DIR}/etc/modules
 fi
-if grep -q 'dtparam=i2c1=on' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q 'dtparam=i2c1=on' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems i2c1 parameter already set, skip this step.'
 else
-  echo 'dtparam=i2c1=on' >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'dtparam=i2c1=on' >> ${ROOTFS_DIR}/boot/config.txt
 fi
-if grep -q '^dtparam=i2c_arm=on' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q '^dtparam=i2c_arm=on' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems i2c_arm parameter already set, skip this step.'
 else
-  echo 'dtparam=i2c_arm=on' >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'dtparam=i2c_arm=on' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
 echo '>>> Enable 1-Wire'
@@ -53,42 +53,42 @@ if grep -q '^w1_therm' ${ROOTFS_DIR}/etc/modules; then
 else
   echo 'w1_therm' >> ${ROOTFS_DIR}/etc/modules
 fi
-if grep -q '^dtoverlay=w1-gpio' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q '^dtoverlay=w1-gpio' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems w1-gpio parameter already set, skip this step.'
 else
-  echo 'dtoverlay=w1-gpio,gpiopin='$w1gpio >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'dtoverlay=w1-gpio,gpiopin='$w1gpio >> ${ROOTFS_DIR}/boot/config.txt
 fi
-if grep -q '^dtparam=i2c_arm=on' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q '^dtparam=i2c_arm=on' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems i2c_arm parameter already set, skip this step.'
 else
-  echo 'dtparam=i2c_arm=on' >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'dtparam=i2c_arm=on' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
 # Enable Wifi-Stick on Raspberry Pi 1 & 2
-if grep -q '^net.ifnames=0' ${ROOTFS_DIR}/boot/firmware/cmdline.txt; then
+if grep -q '^net.ifnames=0' ${ROOTFS_DIR}/boot/cmdline.txt; then
   echo 'Seems net.ifnames=0 parameter already set, skip this step.'
 else
-  echo 'net.ifnames=0' >> ${ROOTFS_DIR}/boot/firmware/cmdline.txt
+  echo 'net.ifnames=0' >> ${ROOTFS_DIR}/boot/cmdline.txt
 fi
 
 # enable miniuart-bt on Raspberry Pi and set core frequency, for stable miniUART and bluetooth (see https://www.raspberrypi.org/documentation/configuration/uart.md)
 echo ">>> Install required miniuart-bt modules for rak811 & Witty Pi"
-if grep -q 'dtoverlay=pi3-miniuart-bt' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q 'dtoverlay=pi3-miniuart-bt' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems setting Pi3/4 Bluetooth to use mini-UART is done already, skip this step.'
 else
-  echo 'dtoverlay=pi3-miniuart-bt' >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'dtoverlay=pi3-miniuart-bt' >> ${ROOTFS_DIR}/boot/config.txt
 fi
-if grep -q 'core_freq=250' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q 'core_freq=250' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems the frequency of GPU processor core is set to 250MHz already, skip this step.'
 else
-  echo 'core_freq=250' >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'core_freq=250' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
 # Enable HDMI for a default "safe" mode to work on all screens
-if grep -q '^hdmi_safe=1' ${ROOTFS_DIR}/boot/firmware/config.txt; then
+if grep -q '^hdmi_safe=1' ${ROOTFS_DIR}/boot/config.txt; then
   echo 'Seems the hdmi is set to safe mode already, skip this step.'
 else
-  echo 'hdmi_safe=1' >> ${ROOTFS_DIR}/boot/firmware/config.txt
+  echo 'hdmi_safe=1' >> ${ROOTFS_DIR}/boot/config.txt
 fi
 
 echo '>>> Create www-data user'
