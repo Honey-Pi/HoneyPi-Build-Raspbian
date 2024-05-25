@@ -31,7 +31,7 @@ jobs:
           # turn the detached message off
           git config --global advice.detachedHead false
           cd pi-gen && git fetch && git fetch --tags
-          git checkout 2024-03-15-raspios-bookworm
+          git checkout 2024-03-12-raspios-bullseye
           cp ./../config ./config
           cp -R ./../stage-honeypi ./stage-honeypi
           sudo ./build.sh
