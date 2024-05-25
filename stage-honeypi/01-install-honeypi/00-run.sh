@@ -208,8 +208,8 @@ chmod -R 775 /home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts
 # Set folder permissions
 echo 'Setting folder permissions for /home/pi'
 run_in_chroot "
-sudo chown -R pi:pi /home/pi
-sudo chmod -R 755 /home/pi
+sudo chown -R pi:pi /home/${FIRST_USER_NAME}
+sudo chmod -R 755 /home/${FIRST_USER_NAME}
 "
 
 # Create File with version information
