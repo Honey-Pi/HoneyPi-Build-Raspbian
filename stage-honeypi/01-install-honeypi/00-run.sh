@@ -94,26 +94,48 @@ if ! grep -q 'www-data ALL=NOPASSWD: ALL' "${ROOTFS_DIR}/etc/sudoers"; then
 fi
 
 # Install NTP and configure pip and required libraries
-echo 'Configuring NTP and installing pip libraries'
+echo 'Configuring NTP'
 run_in_chroot "
 dpkg-reconfigure -f noninteractive ntp
 mkdir -p /var/log/ntpsec/
 chown -R ntpsec:ntpsec /var/log/ntpsec/
+"
+
+echo 'Configuring pip and setting global.break-system-packages'
+run_in_chroot "
 python3 -m pip config set global.break-system-packages true
 mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old || true
 export PIP_ROOT_USER_ACTION=ignore
 python3 -m pip install --upgrade pip
+"
+
+echo 'Removing old rpi.gpio to replace it with rpi-lgpio wheel'
+run_in_chroot "
+apt-get purge python{,3}-rpi.gpio
+"
+
+echo 'Installing required Python libraries'
+run_in_chroot "
 pip3 install -r /home/${FIRST_USER_NAME}/HoneyPi/requirements.txt
 python3 -m pip install --upgrade setuptools wheel
+"
+
+echo 'Configuring BCM2709 hardware'
+run_in_chroot "
 echo -e '\nHardware   : BCM2709' >> /etc/cpuinfo
 if [ -e /etc/cpuinfo ]; then
   mount --bind /etc/cpuinfo /proc/cpuinfo
 fi
+"
+
+echo 'Installing additional Python libraries'
+run_in_chroot "
 pip3 install Adafruit_DHT
 pip3 install Adafruit_Python_DHT
 pip3 install timezonefinder==6.1.8 numpy
 lighttpd-enable-mod fastcgi fastcgi-php
 "
+
 
 # Install configuration files
 echo 'Installing configuration files'
@@ -205,15 +227,39 @@ chown -R pi:pi /home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts
 chmod -R 775 /home/${FIRST_USER_NAME}/HoneyPi/rpi-scripts
 "
 
+# Install latest HoneyPi web interface
+echo 'Installing latest HoneyPi web interface'
+REPO="Honey-Pi/rpi-webinterface"
+WebinterfaceTag=$(get_latest_release $REPO $STABLE)
+if [ -n "$WebinterfaceTag" ]; then
+  echo "Downloading HoneyPi web interface: $WebinterfaceTag"
+  rm -rf "${ROOTFS_DIR}/var/www/html"
+  wget -q "https://codeload.github.com/$REPO/zip/$WebinterfaceTag" -O "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip"
+  unzip -q "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/HoneyPiWebinterface.zip" -d "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi"
+  mkdir -p "${ROOTFS_DIR}/var/www"
+  mv "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-webinterface-${WebinterfaceTag//v}/dist" "${ROOTFS_DIR}/var/www/html"
+  mv "${ROOTFS_DIR}/home/${FIRST_USER_NAME}/HoneyPi/rpi-webinterface-${WebinterfaceTag//v}/backend" "${ROOTFS_DIR}/var/www/html/backend"
+else
+  echo "Failed to fetch or download HoneyPi web interface."
+fi
+
+# Enable file rights to HoneyPi web interface
+echo 'Setting file rights for HoneyPi web interface'
+run_in_chroot "
+chown -R www-data:www-data /var/www/html
+chmod -R 775 /var/www/html
+"
+
 # Set folder permissions
 echo 'Setting folder permissions for /home/pi'
 run_in_chroot "
-sudo chown -R pi:pi /home/${FIRST_USER_NAME}
-sudo chmod -R 755 /home/${FIRST_USER_NAME}
+sudo chown -R pi:pi /home/pi
+sudo chmod -R 755 /home/pi
 "
 
 # Create File with version information
 DATE=$(date +%d-%m-%y)
 echo "HoneyPi (last install on RPi: $DATE)" > "${ROOTFS_DIR}/var/www/html/version.txt"
 echo "rpi-scripts $ScriptsTag" >> "${ROOTFS_DIR}/var/www/html/version.txt"
+echo "rpi-webinterface $WebinterfaceTag" >> ${ROOTFS_DIR}/var/www/html/version.txt
 echo "postupdatefinished 1" >> "${ROOTFS_DIR}/var/www/html/version.txt"
