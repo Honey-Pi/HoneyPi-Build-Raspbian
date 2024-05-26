@@ -187,11 +187,6 @@ install -m 644 files/hostapd.conf.tmpl "${ROOTFS_DIR}/etc/hostapd/hostapd.conf.t
 install -m 644 files/hostapd "${ROOTFS_DIR}/etc/default/hostapd"
 
 
-
-# Install unzip if missing
-echo 'Installing unzip if missing'
-apt-get -y update && apt-get -y install --no-install-recommends zip unzip
-
 # Function to get the latest release from a GitHub repository
 get_latest_release() {
   local repo=$1
