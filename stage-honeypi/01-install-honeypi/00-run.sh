@@ -109,10 +109,6 @@ export PIP_ROOT_USER_ACTION=ignore
 python3 -m pip install --upgrade pip
 "
 
-echo 'Removing old rpi.gpio to replace it with rpi-lgpio wheel'
-run_in_chroot "
-apt-get -y purge python{,3}-rpi.gpio
-"
 
 echo 'Installing required Python libraries'
 run_in_chroot "
@@ -134,6 +130,14 @@ pip3 install Adafruit_DHT
 pip3 install Adafruit_Python_DHT
 pip3 install timezonefinder==6.1.8 numpy
 "
+
+# echo 'Removing old rpi.gpio to replace it with rpi-lgpio on Raspberry 5 with bookworm'
+# run_in_chroot "
+# pip3 uninstall rpi-gpio
+# apt remove -y python3-rpi.gpio
+# apt install -y python3-grpcio python3-grpc-tools
+# pip3 install rpi-lgpio
+# "
 
 # Install configuration files
 echo 'Installing configuration files'
