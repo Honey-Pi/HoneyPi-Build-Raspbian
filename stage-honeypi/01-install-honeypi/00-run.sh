@@ -198,9 +198,9 @@ get_latest_release() {
   local stable=$2
   echo "Fetching latest release for $repo"
   if [ "$stable" -eq 1 ]; then
-    echo "$(curl --silent "https://api.github.com/repos/$repo/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")')"
+    curl --silent "https://api.github.com/repos/$repo/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")'
   else
-    echo "$(curl --silent "https://api.github.com/repos/$repo/tags" -k | grep -Po '"name": "\K.*?(?=")' | head -1)"
+    curl --silent "https://api.github.com/repos/$repo/tags" -k | grep -Po '"name": "\K.*?(?=")' | head -1
   fi
 }
 
