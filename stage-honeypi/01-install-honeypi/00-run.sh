@@ -98,6 +98,7 @@ echo 'Configuring NTP'
 run_in_chroot "
 dpkg-reconfigure -f noninteractive ntp
 mkdir -p /var/log/ntpsec/
+mkdir -p /etc/ntpsec/
 "
 
 echo 'Configuring pip and setting global.break-system-packages'
