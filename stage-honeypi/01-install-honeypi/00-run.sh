@@ -251,10 +251,13 @@ chown -R www-data:www-data /var/www/html
 chmod -R 775 /var/www/html
 "
 
+# Enable Lighttpd modules
+echo 'Enabling Lighttpd modules'
+run_in_chroot "lighttpd-enable-mod fastcgi fastcgi-php || echo 'lighttpd-enable-mod failed, continuing.'"
+
 # Reload Lighttpd to apply changes
 echo 'Reloading Lighttpd to apply changes'
 run_in_chroot "service lighttpd force-reload || echo 'Lighttpd reload failed, continuing.'"
-
 
 # Set folder permissions
 echo 'Setting folder permissions for /home/pi'
