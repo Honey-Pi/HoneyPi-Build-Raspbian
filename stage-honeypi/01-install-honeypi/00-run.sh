@@ -107,7 +107,9 @@ mkdir -p /etc/ntpsec/
 echo 'Configuring pip and setting global.break-system-packages'
 run_in_chroot "
 python3 -m pip config set global.break-system-packages true
-mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old || true
+if [ -f /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
+  mv /usr/lib/python3.11/EXTERNALLY-MANAGED /usr/lib/python3.11/EXTERNALLY-MANAGED.old || true
+fi
 export PIP_ROOT_USER_ACTION=ignore
 python3 -m pip install --upgrade pip
 "
