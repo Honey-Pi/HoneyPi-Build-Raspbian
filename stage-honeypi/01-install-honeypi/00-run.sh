@@ -204,6 +204,9 @@ get_latest_release() {
   fi
 }
 
+# Initialize STABLE variable
+STABLE=0
+
 # Install latest HoneyPi runtime measurement scripts
 echo 'Installing latest HoneyPi runtime measurement scripts'
 REPO="Honey-Pi/rpi-scripts"
