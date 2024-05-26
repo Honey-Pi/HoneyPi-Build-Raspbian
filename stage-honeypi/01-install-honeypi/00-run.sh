@@ -111,7 +111,7 @@ python3 -m pip install --upgrade pip
 
 echo 'Removing old rpi.gpio to replace it with rpi-lgpio wheel'
 run_in_chroot "
-apt-get purge python{,3}-rpi.gpio
+apt-get -y purge python{,3}-rpi.gpio
 "
 
 echo 'Installing required Python libraries'
@@ -196,12 +196,14 @@ apt-get -y update && apt-get -y install --no-install-recommends zip unzip
 get_latest_release() {
   local repo=$1
   local stable=$2
-  echo "Fetching latest release for $repo"
   if [ "$stable" -eq 1 ]; then
-    curl --silent "https://api.github.com/repos/$repo/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")'
+      # return latest stable release
+      result="$(curl --silent "https://api.github.com/repos/$repo/releases/latest" -k | grep -Po '"tag_name": "\K.*?(?=")')"
   else
-    curl --silent "https://api.github.com/repos/$repo/tags" -k | grep -Po '"name": "\K.*?(?=")' | head -1
+      # return lastest release, which can be also a pre-releases (alpha, beta, rc)
+      result="$(curl --silent "https://api.github.com/repos/$repo/tags" -k | grep -Po '"name": "\K.*?(?=")' | head -1)"
   fi
+  echo "$result"
 }
 
 # Initialize STABLE variable
