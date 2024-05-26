@@ -38,8 +38,11 @@ echo "Setting Debian frontend to Noninteractive"
 run_in_chroot "
 echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 export DEBIAN_FRONTEND=noninteractive
-update-ca-certificates -f
 "
+
+# Update CA certificates for a secure connection to GitHub
+echo "Update CA certificates for a secure connection to GitHub"
+run_in_chroot "update-ca-certificates --fresh"
 
 # Download and set up HoneyPi Installer
 echo "Cloning HoneyPi repository"
