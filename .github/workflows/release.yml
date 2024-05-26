@@ -39,7 +39,7 @@ jobs:
           sudo chown -fR $(stat -c "%U:%G" .) ./deploy
       # delete previous releases
       - name: 🗑️ Delete previous releases
-        uses: dev-drprasad/delete-older-releases@v0.3.2
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 0
           delete_tags: true

@@ -144,6 +144,12 @@ install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
 install -m 644 files/ntp.conf "${ROOTFS_DIR}/etc/ntpsec/ntp.conf"
 install -m 644 files/motd "${ROOTFS_DIR}/etc/motd"
 
+# Enable Lighttpd modules and Reload Lighttpd to apply changes
+echo 'Enabling Lighttpd modules'
+run_in_chroot "lighttpd-enable-mod fastcgi fastcgi-php || echo 'lighttpd-enable-mod failed, continuing.'"
+echo 'Reloading Lighttpd to apply changes'
+run_in_chroot "service lighttpd force-reload || echo 'Lighttpd reload failed, continuing.'"
+
 # Enable HoneyPi Service
 echo 'Enabling HoneyPi Service'
 install -m 644 files/honeypi.service "${ROOTFS_DIR}/lib/systemd/system/honeypi.service"
@@ -247,14 +253,6 @@ run_in_chroot "
 chown -R www-data:www-data /var/www/html
 chmod -R 775 /var/www/html
 "
-
-# Enable Lighttpd modules
-echo 'Enabling Lighttpd modules'
-run_in_chroot "lighttpd-enable-mod fastcgi fastcgi-php || echo 'lighttpd-enable-mod failed, continuing.'"
-
-# Reload Lighttpd to apply changes
-echo 'Reloading Lighttpd to apply changes'
-run_in_chroot "service lighttpd force-reload || echo 'Lighttpd reload failed, continuing.'"
 
 # Set folder permissions
 echo 'Setting folder permissions for /home/pi'
