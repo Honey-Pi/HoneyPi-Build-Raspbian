@@ -101,7 +101,6 @@ echo 'Configuring NTP'
 run_in_chroot "
 dpkg-reconfigure -f noninteractive ntp
 mkdir -p /var/log/ntpsec/
-mkdir -p /etc/ntpsec/
 "
 
 echo 'Configuring pip and setting global.break-system-packages'
@@ -150,7 +149,7 @@ install -m 755 files/wvdial.conf "${ROOTFS_DIR}/etc/wvdial.conf"
 install -m 755 files/wvdial.conf.tmpl "${ROOTFS_DIR}/etc/wvdial.conf.tmpl"
 install -m 644 files/wvdial "${ROOTFS_DIR}/etc/ppp/peers/wvdial"
 install -m 644 files/lighttpd.conf "${ROOTFS_DIR}/etc/lighttpd/lighttpd.conf"
-install -m 644 files/ntp.conf "${ROOTFS_DIR}/etc/ntpsec/ntp.conf"
+install -m 644 files/ntp.conf "${ROOTFS_DIR}/etc/ntp.conf"
 install -m 644 files/motd "${ROOTFS_DIR}/etc/motd"
 
 # Enable Lighttpd modules and Reload Lighttpd to apply changes
